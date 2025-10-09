@@ -34,43 +34,18 @@ Hello world! This is the first lab submission for this class. I am using a markd
 
 <img src="https://static.wikia.nocookie.net/strawberryshortcake/images/b/b9/Inaccurate_map_of_strawberryland.png/revision/latest?cb=20210430182300" alt="Strawberryland" style="width:104px;height:142px;">
 
-const cities = [
-  { city: "New York", population: 8398748 },
-  { city: "Los Angeles", population: 3990456 },
-  { city: "Chicago", population: 2705994 },
-  { city: "Houston", population: 2320268 },
-  { city: "Phoenix", population: 1680992 },
-];
-
-// Create a reactive variable `filterText` from a text input
-const filterText = view(Inputs.text({
-  label: "Filter by city",
-  placeholder: "e.g., Chicago"
-}));
-
-// Automatically re-filter cities whenever the input changes
-const filteredCities = cities.filter(d => 
-  d.city.toLowerCase().includes(filterText.toLowerCase())
-);
-
-# Interactive City Filter
-
-${view(Inputs.text({ label: "Filter by city", placeholder: "e.g., Chicago" }))}
-
-```js
-const cities = [
-  { city: "New York", population: 8398748 },
-  { city: "Los Angeles", population: 3990456 },
-  { city: "Chicago", population: 2705994 },
-  { city: "Houston", population: 2320268 },
-  { city: "Phoenix", population: 1680992 },
-];
-
-const filterText = view(Inputs.text({ label: "Filter by city" }));
-
-const filteredCities = cities.filter(d => 
-  d.city.toLowerCase().includes(filterText.toLowerCase())
-);
-
-display(filteredCities);
-```
+<script>
+    viewof replay = Inputs.button("Replay")
+    progress = {
+  replay;
+  const width = 360;
+  const height = 20;
+  const context = DOM.context2d(width, height);
+  context.canvas.style.border = "solid 1px black";
+  for (let i = width; i >= 0; --i) {
+    context.clearRect(0, 0, width, height);
+    context.fillRect(0, 0, i, height);
+    yield context.canvas;
+  }
+}
+</script>
