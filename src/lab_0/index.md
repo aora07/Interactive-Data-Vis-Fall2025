@@ -1,5 +1,5 @@
 ---
-title: "Lab 0:Aura Orantes"
+title: "Lab 0:Getting Started"
 toc: true
 ---
 # Lab 0: Getting Started
@@ -39,18 +39,7 @@ Hello world! This is the first lab submission for this class. I am using a markd
 
 <img src="https://static.wikia.nocookie.net/strawberryshortcake/images/b/b9/Inaccurate_map_of_strawberryland.png/revision/latest?cb=20210430182300" alt="Strawberryland" style="width:104px;height:142px;">
 
+My favourite number is ${favNumber}, and 2 x ${favNumber} is equal to **s{favNumber *2}!**
 ```js
-    viewof replay = Inputs.button("Replay")
-    progress = {
-  replay;
-  const width = 360;
-  const height = 20;
-  const context = DOM.context2d(width, height);
-  context.canvas.style.border = "solid 1px black";
-  for (let i = width; i >= 0; --i) {
-    context.clearRect(0, 0, width, height);
-    context.fillRect(0, 0, i, height);
-    yield context.canvas;
-  }
-}
+   viewof favNumber = Inputs.range([0,100], {label: "Favourite Number", value 29, step:1})
 ```
