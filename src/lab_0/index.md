@@ -1,5 +1,5 @@
 ---
-title: "Lab 0:Aura Orantes"
+title: "Lab 0:Getting Started"
 toc: true
 ---
 # Lab 0: Getting Started
@@ -39,18 +39,20 @@ Hello world! This is the first lab submission for this class. I am using a markd
 
 <img src="https://static.wikia.nocookie.net/strawberryshortcake/images/b/b9/Inaccurate_map_of_strawberryland.png/revision/latest?cb=20210430182300" alt="Strawberryland" style="width:104px;height:142px;">
 
-```js
-    viewof replay = Inputs.button("Replay")
-    progress = {
-  replay;
-  const width = 360;
-  const height = 20;
-  const context = DOM.context2d(width, height);
-  context.canvas.style.border = "solid 1px black";
-  for (let i = width; i >= 0; --i) {
-    context.clearRect(0, 0, width, height);
-    context.fillRect(0, 0, i, height);
-    yield context.canvas;
-  }
-}
+``` js 
+const checkout = view(
+  Inputs.checkbox(["B", "A", "Z", "Z", "⚠️F", "D", "G", "G", "G", "⚠️Q"], {
+    disabled: ["⚠️F", "⚠️Q"],
+    sort: true,
+    unique: true,
+    value: "B",
+    label: "Choose categories:"
+  })
+);
+
+
+    
+
+  Array(1) ["B"]
 ```
+checkout
