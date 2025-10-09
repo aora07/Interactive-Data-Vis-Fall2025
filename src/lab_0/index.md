@@ -1,5 +1,5 @@
 ---
-title: "Lab 0: Getting Started"
+title: "Lab 0:Aura Orantes"
 toc: true
 ---
 # Lab 0: Getting Started
@@ -15,12 +15,17 @@ Hello world! This is the first lab submission for this class. I am using a markd
 </tr>
 <tr>
     <td>John Smith</td>
-    <td>Jane Doe</td>
-    <td>John Doe</td>
+    <td>01/01/90</td>
+    <td>123 Apple Lane, Strawberry Land, 10000</td>
 </tr>
 <tr>
-    <td>123 Apple Lane, Strawberry Land, 10000</td>
+    <td>Jane Doe</td>
+    <td>02/14/87</td>
     <td>555 Sherbet St, Strawberry Land, 10000</td>
+</tr>
+<tr>
+    <td>John Doe</td>
+    <td>12/25/01</td>
     <td>991 Rocky Road, Strawberry Land, 10000</td>
 </tr>
 </table>
@@ -34,7 +39,7 @@ Hello world! This is the first lab submission for this class. I am using a markd
 
 <img src="https://static.wikia.nocookie.net/strawberryshortcake/images/b/b9/Inaccurate_map_of_strawberryland.png/revision/latest?cb=20210430182300" alt="Strawberryland" style="width:104px;height:142px;">
 
-<script>
+```js
     viewof replay = Inputs.button("Replay")
     progress = {
   replay;
@@ -48,4 +53,4 @@ Hello world! This is the first lab submission for this class. I am using a markd
     yield context.canvas;
   }
 }
-</script>
+```
