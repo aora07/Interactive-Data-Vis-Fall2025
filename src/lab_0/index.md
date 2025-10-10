@@ -37,20 +37,12 @@ Hello world! This is the first lab submission for this class. I am using a markd
     <li>Sour Grapes</li>
 </ul>
 
-<img src="https://static.wikia.nocookie.net/strawberryshortcake/images/b/b9/Inaccurate_map_of_strawberryland.png/revision/latest?cb=20210430182300" alt="Strawberryland" style="width:104px;height:142px;">
+<img src="https://github.com/aora07/Interactive-Data-Vis-Fall2025/blob/main/src/lab_0/Landscape_of_Strawberryland.jpg">
 
 ```js
-    viewof replay = Inputs.button("Replay")
-    progress = {
-  replay;
-  const width = 360;
-  const height = 20;
-  const context = DOM.context2d(width, height);
-  context.canvas.style.border = "solid 1px black";
-  for (let i = width; i >= 0; --i) {
-    context.clearRect(0, 0, width, height);
-    context.fillRect(0, 0, i, height);
-    yield context.canvas;
-  }
-}
+    const team = view(Inputs.select(
+     ["New York Yankees", "New York Giants", "New York Mets", "Buffalo Bills","New York Jets","New York Rangers", "New York Islanders","Brooklyn Nets","New York Knick"], {label: "Favourite NY Team:",value:"New York Giants"}
+    ));
 ```
+My favourite NY team is the ${team}!
+
