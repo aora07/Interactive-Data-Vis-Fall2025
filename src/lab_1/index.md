@@ -56,7 +56,7 @@
 <script>
 (async () => {
   // Load dataset
-  const data = await d3.csv("./data/pollinator_activity_data.csv", d3.autoType);
+  const data = await d3.csv("/data/pollinator_activity_data.csv", d3.autoType);
 
   // 1️⃣ Body Mass vs Wingspan
   const massPlot = Plot.plot({
