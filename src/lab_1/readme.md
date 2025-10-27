@@ -41,3 +41,4 @@ There are other pieces of data available, which could yeild additional interesti
 | **visit_count** | Integer | 1-30+ | Number of visits during observation period |
 | **avg_body_mass_g** | Numeric | 0.08-0.54g | Average body mass of observed bees (grams) |
 | **avg_wing_span_mm** | Numeric | 15-50mm | Average wing span of observed bees (millimeters) |
+
