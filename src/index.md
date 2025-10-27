@@ -5,5 +5,5 @@ Welcome to the CUNY Interactive Data Visualization course repository for fall 20
 Labs:
 
 - [Lab 0: Getting Started](/lab_0/readme)
-- [Lab 1: Passing Pollinators](/lab_1/index.md)
+- [Lab 1: Prolific Pollinators](/lab_1/index)
 - 
