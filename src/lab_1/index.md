@@ -1,22 +1,6 @@
 ---
-title: Prolific Pollinators
+title: "Lab 1: Passing Pollinators"
 toc: true
 ---
 
-const pollinator_csv = FileAttachment("pollinator_activity_data.csv").csv({typed: true});
-
-
-
-```js 
-Plot.plot({
-  y: {
-    type: "log",
-    domain: [30,300],
-    grid: true
-  },
-  marks: [
-    Plot.lineY(aapl, {x: "Date", y: "Close"})
-  ]
-})
-```
-
+This page is where you can iterate. Follow the lab instructions in the [readme.md](./README.md).
