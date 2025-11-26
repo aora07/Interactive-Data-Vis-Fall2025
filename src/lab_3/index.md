@@ -40,13 +40,17 @@ Plot.plot({
   ]
 })
 ```
+
+## Election Result Analysis
+
+### Overall Performance
 ```js
-// Calculate overall statistics
+// Calculate overall election statistics
 const totalVotesOverall = d3.sum(results, d => d.votes_candidate + d.votes_opponent);
 const candidateVotesOverall = d3.sum(results, d => d.votes_candidate);
 const voteShareOverall = candidateVotesOverall / totalVotesOverall;
+const fiftyPercentLine = totalVotesOverall / 2;
 ```
-
 ```js
 Plot.plot({
   title: `Overall Election Results - ${(voteShareOverall * 100).toFixed(1)}% Vote Share`,
@@ -58,16 +62,27 @@ Plot.plot({
       x: "candidate",
       y: "votes",
       fill: d => d.candidate === "Our Candidate" ? "#2E86AB" : "#A23B72"
+    }),
+    // Add 50% annotation line
+    Plot.ruleY([fiftyPercentLine], {
+      stroke: "red",
+      strokeDasharray: "4,2",
+      strokeWidth: 2
+    }),
+    // Add label for the 50% line
+    Plot.text([{x: "Our Candidate", y: fiftyPercentLine, text: "50% Mark", dy: -10}], {
+      fontSize: 12,
+      fill: "red",
+      fontWeight: "bold"
     })
   ],
   width: 400,
   height: 300
 })
 ```
-Context: The candidate received 48.2% of the total vote across all districts, demonstrating strong performance but falling short of victory. This represents a solid foundation for future campaigns, showing significant voter support that can be built upon.
+Our candidate received 56.4% of the total vote across all districts, demonstrating strong performance which led to ultimate victory. Despite this, more campaigning and reaching out to communities such as Queens and Staten Island could improve performance. 
 
 ## District Performance Map
-\\ First, let's verify our data structure
 ```js
 console.log("Sample district properties:", districts.features[0].properties);
 console.log("Sample election result:", results[0]);
@@ -100,32 +115,7 @@ const choroplethData = {
   })
 };
 ```
-```js
-// Create the map
-Plot.plot({
-  title: "Candidate Vote Share by District",
-  projection: {
-    type: "mercator",
-    domain: districts
-  },
-  color: {
-    type: "linear",
-    scheme: "reds",
-    legend: true,
-    label: "Vote Share",
-    domain: [0.3, 0.7] // Fixed domain to ensure color variation
-  },
-  marks: [
-    Plot.geo(choroplethData, {
-      fill: d => d.properties.vote_share,
-      stroke: "white",
-      strokeWidth: 1
-    })
-  ],
-  width: 700,
-  height: 600
-})
-```
+
 
 ```js
 // Alternative: Show events on the map with color by attendance
@@ -156,14 +146,13 @@ Plot.plot({
   height: 500
 })
 ```
-Context: The map reveals clear geographic patterns:
+The map reveals clear geographic patterns:
 
-Strongholds: Manhattan (districts 101-112) and northern Brooklyn (301-318) showed consistent support (>50% vote share)
-Opportunity Areas: Queens (400s) and Staten Island (500s) districts averaged 35-45% support, indicating room for growth
-Urban-Rural Divide: Support correlates strongly with population density, suggesting messaging resonated better in urban environments.
+Upper Manhattan, South Bronx and North Brooklyn shows support with most in attendance in these districts, showing that messaging is most effective in urban areas.  Queens and Staten Island show areas of improvement for candidates, as most attendance is low here (except for two outliers in Queens), which show messaging should be modified to better suit suburban as well as urban needs. 
 
+## Voter Sentiment Analysis
 ```js
-// Horizontal bar chart with proper axis visibility
+// Simple horizontal bar chart with minimal styling
 const issueAnalysisData = [
   "affordable_housing_alignment", 
   "public_transit_alignment",
@@ -176,37 +165,26 @@ const issueAnalysisData = [
     issue: issue.replace(/_/g, " ").replace("alignment", "").trim(),
     support: avgSupport
   };
-});
-
-// Sort by support score (highest first)
-issueAnalysisData.sort((a, b) => b.support - a.support);
+}).sort((a, b) => b.support - a.support);
 ```
-
 ```js
+// Use a very basic plot configuration
 Plot.plot({
-  title: "Voter Support for Campaign Issues (1-5 Scale)",
   marks: [
     Plot.barX(issueAnalysisData, {
       y: "issue",
-      x: "support",
-      fill: "#2E86AB"
+      x: "support"
     })
   ],
-  y: {
-    label: "Campaign Issues",
-    axis: "left" // Ensure y-axis is visible
-  },
-  x: { 
-    domain: [1, 5], 
-    label: "Average Support Score",
-    ticks: 5,
-    axis: "top" // Try putting x-axis on top if bottom isn't visible
-  },
-  marginLeft: 200,
-  marginRight: 50,
-  marginTop: 40,
-  marginBottom: 40,
-  width: 700, // Increased width
-  height: 350
+  y: { axis: "left" },
+  x: { axis: "bottom" },
+  marginLeft: 300,
+  width: 800,
+  height: 400
 })
 ```
+Voter sentiment reveals clear priorities:
+
+High Support: Affordable housing and public transit - core urban issues driving voter engagement.  
+Moderate Support: Childcare support and small business tax policies - solid but not primary motivators.  
+Lower Support: Police reform - potentially polarizing issue that may require refined messaging.
