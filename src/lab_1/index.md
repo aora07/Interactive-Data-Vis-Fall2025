@@ -3,156 +3,218 @@ title: "Lab 1: Passing Pollinators"
 toc: true
 ---
 
-This dashboard uses the field study dataset in `/data/pollinator_activity_data.csv` to answer:
+# Pollinator Activity Dashboard
 
-1. **What is the body mass and wing span distribution of each pollinator species?**  
-2. **What is the ideal weather for pollinating (conditions, temperature, etc.)?**  
-3. **Which flower has the most nectar production?**
-
-## 1. Body Mass and Wing Span Distribution of Each Pollinator Species
-
-The graph shows honeybees clustered around 0-25mm in average wing span and 0.1g in average body mass. Bumblebees vary greatly from 25mm-42mm in average wingspan and cluster from 0.2-0.3g in average body mass. Finally, carpenter bees average around 0.4-0.5g in bodt mass, and 34-50 mm in average wing span. 
+This dashboard analyzes pollinator activity data to answer key questions about bee species characteristics, ideal weather conditions for pollination, and nectar production by flower species.
 
 ```js
-const pollinator_activity_data = await FileAttachment("./data/pollinator_activity_data.csv").csv({ typed: true });
+// Load and prepare the data
+const data = await FileAttachment("./data/pollinator_activity_data.csv").csv({typed: true});
+```
+
+## 1. Body Mass and Wing Span Distribution by Pollinator Species
+This visualization shows the physical characteristics of the three observed bee species.
+
+// Question 1: Body mass and wing span distribution
+```js 
+function chart1() {
+  return Plot.plot({
+    title: "Body Mass and Wing Span Distribution by Species",
+    grid: true,
+    marginLeft: 80,
+    facet: {
+      data: data,
+      x: "pollinator_species",
+      marginRight: 40
+    },
+    marks: [
+      Plot.ruleX([0]),
+      Plot.dot(data, {
+        x: "avg_body_mass_g",
+        y: "avg_wing_span_mm",
+        fill: "pollinator_species",
+        stroke: "black",
+        strokeWidth: 0.5,
+        r: 3
+      }),
+      Plot.linearRegressionY(data, {
+        x: "avg_body_mass_g",
+        y: "avg_wing_span_mm",
+        stroke: "gray"
+      })
+    ],
+    x: {
+      label: "Average Body Mass (g)",
+      domain: [0.05, 0.55]
+    },
+    y: {
+      label: "Average Wing Span (mm)",
+      domain: [15, 50]
+    },
+    color: {
+      legend: true
+    },
+    width: 800,
+    height: 300
+  });
+}
+display(chart1());
+```
+
+## 2. Ideal Weather Conditions for Pollinating
+This analysis examines how weather conditions affect pollinator activity.
+```js
+// Question 2: Ideal weather conditions for pollinating
+function chart2() {
+  return Plot.plot({
+    title: "Pollinator Activity by Temperature and Weather Condition",
+    grid: true,
+    marks: [
+      Plot.dot(data, {
+        x: "temperature",
+        y: "visit_count",
+        fill: "weather_condition",
+        stroke: "black",
+        strokeWidth: 0.5,
+        r: 4
+      }),
+      Plot.linearRegressionY(data, {
+        x: "temperature",
+        y: "visit_count",
+        stroke: "gray"
+      })
+    ],
+    x: {
+      label: "Temperature (°C)",
+      domain: [14, 32]
+    },
+    y: {
+      label: "Number of Visits",
+      domain: [0, 30]
+    },
+    color: {
+      legend: true
+    },
+    width: 800,
+    height: 400
+  });
+}
+
+display(chart2());
+
+```
+```js
+// Weather condition vs visit count
+function chart2b() {
+  return Plot.plot({
+    title: "Average Visits by Weather Condition",
+    marks: [
+      Plot.barY(data, {
+        x: "weather_condition",
+        y: "visit_count",
+        fill: "weather_condition"
+      }),
+      Plot.ruleY([0])
+    ],
+    x: {label: "Weather Condition"},
+    y: {label: "Average Number of Visits"},
+    color: {legend: true},
+    width: 800,
+    height: 300
+  });
+}
+
+display(chart2b());
+
+```
+```js
+// Temperature range analysis
+function chart2c() {
+  return Plot.plot({
+    title: "Pollinator Activity by Temperature Ranges",
+    marks: [
+      Plot.rectY(data, Plot.binX({y: "count"}, {x: "temperature", fill: "pollinator_species"})),
+      Plot.ruleY([0])
+    ],
+    x: {label: "Temperature (°C)"},
+    y: {label: "Number of Observations"},
+    color: {legend: true},
+    width: 800,
+    height: 300
+  });
+}
+
+display(chart2c());
+```
+
+## 3. Nectar Production by Flower Species
+This section compares nectar production across different flower species.
+```js
+// Question 3: Nectar production by flower species
+function chart3() {
+  return Plot.plot({
+    title: "Nectar Production by Flower Species",
+    marks: [
+      Plot.boxX(data, {
+        x: "nectar_production",
+        y: "flower_species",
+        fill: "flower_species"
+      }),
+      Plot.dot(data, {
+        x: "nectar_production",
+        y: "flower_species",
+        stroke: "black",
+        strokeWidth: 0.5
+      })
+    ],
+    x: {
+      label: "Nectar Production (μL)",
+      domain: [0.3, 1.1]
+    },
+    y: {label: "Flower Species"},
+    color: {legend: true},
+    width: 800,
+    height: 200
+  });
+}
+
+display(chart3());
 ```
 
 ```js
-Plot.plot({
-  height: 500,
-  title: "Pollinator Species: Body Mass vs. Wing Span",
-  marginTop: 30,
-  grid: true,
-  color: {
-    domain: ["Honeybee", "Bumblebee", "Carpenter Bee"],
-    range: ["#FFD603", "#000000", "#8CCDDB"], 
-    legend: true,
-    label: "Pollinator Species"
-  },
-  x: {
-    label: "Average Body Mass (g)",
-    domain: [0, 0.6],
-    nice: true
-  },
-  y: {
-    label: "Average Wing Span (mm)",
-    domain: [15, 50],
-    nice: true
-  },
-  marks: [
-    Plot.dot(pollinator_activity_data, {
-      x: "avg_body_mass_g",
-      y: "avg_wing_span_mm",
-      fill: "pollinator_species",
-      stroke: "pollinator_species",
-      r: 5,
-      opacity: 0.7
-    }),
-    Plot.frame()
-  ]
-})
+// Additional view: Average nectar production
+function chart3b() {
+  return Plot.plot({
+    title: "Average Nectar Production by Flower Species",
+    marks: [
+      Plot.barY(data, {
+        x: "flower_species",
+        y: "nectar_production",
+        fill: "flower_species"
+      }),
+      Plot.ruleY([0])
+    ],
+    x: {label: "Flower Species"},
+    y: {label: "Average Nectar Production (μL)"},
+    color: {legend: true},
+    width: 800,
+    height: 300
+  });
+}
+
+display(chart3b());
 ```
 
-
-## 2. Ideal Weather Conditions for Pollination Visits
-
-This chart shows that pollinators are most likely to visit when it is sunny, and their visits increase steadily under increasing temperatures. Also, it peaks in moderate humidity (65-75%) under partly cloudy weather conditions. Also, the pollinator increase their visits with the decrease of wind speeds. 
-
-```js
-Plot.plot({
-  title: `Pollinator Visits by ${conditionX.label}`,
-  height: 500,
-  grid: true,
-  color: {
-    legend: true,
-    label: "Weather Condition",
-    domain: ["Sunny", "Partly Cloudy", "Cloudy"],
-    range: ["#FFD603", "#000000", "#8CCDDB"]
-  },
-  x: {
-    label: conditionX.label,
-    nice: true
-  },
-  y: {
-    label: "Average Visit Count",
-    nice: true,
-    zero: true
-  },
-  marks: [
-    Plot.lineY(
-      pollinator_activity_data,
-      Plot.binX(
-        { y: "mean" },
-        {
-          x: d => d[conditionX.value],
-          y: "visit_count",
-          stroke: "weather_condition",
-          curve: "natural",
-          thresholds: 10
-        }
-      )
-    ),
-    Plot.ruleY([0]),
-    Plot.frame()
-  ]
-})
-```
-```js
-const envOptions = [
-  { label: "Temperature", value: "temperature" },
-  { label: "Humidity", value: "humidity" },
-  { label: "Wind Speed", value: "wind_speed" }
-];
-
-const conditionX = view(Inputs.select(envOptions, {
-  label: "Select Environmental Variable:",
-  value: envOptions[0],
-  format: d => d.label
-}));
-
-```
-
-
-
-
-## 3. Mean Nectar Production by Flower Species
-
-This graph shows which flower species creates more nectar on average. On average, Sunflowers produce the highest nectar production. 
-
-```js
-Plot.plot({
-  title: "Average Nectar Production by Flower Species",
-  height: 500,
-  marginLeft: 100,
-  grid: true,
-  x: {
-    label: "Average Nectar Production (μL)",
-    nice: true
-  },
-  y: {
-    label: "Flower Species"
-  },
-  color: {
-    legend: false,
-    range: ["#FFD603", "#000000", "#8CCDDB"]
-  },
-  marks: [
-    Plot.barX(
-      Plot.groupY(
-        { x: "mean" },             // ✅ reducer
-        pollinator_activity_data,   // ✅ dataset in correct place
-        {
-          y: "flower_species",
-          x: "nectar_production",
-          fill: "flower_species",
-          stroke: "black",
-          strokeWidth: 1.5
-        }
-      )
-    ),
-    Plot.ruleX([0])
-  ]
-});
-
-
-```
+## Summary of Findings
+### 1. Bee Species Characteristics
+Honeybees: Smallest body mass (0.08-0.12g) and wing span (15-22mm).  
+Bumblebees: Medium size with body mass around 0.22-0.27g and wing span 30-38mm.  
+Carpenter Bees: Largest species with body mass 0.38-0.52g and wing span 38-48mm.  
+### 2. Ideal Weather Conditions
+Temperature: Optimal range appears to be 20-28°C.  
+Weather Conditions: Sunny and partly cloudy conditions show highest pollinator activity.  
+Peak Activity: Most visits occur in moderate temperatures with low to moderate humidity.  
+### 3. Nectar Production
+Sunflowers: Highest nectar production (average ~0.95μL).  
+Coneflowers: Moderate nectar production (average ~0.64μL).  
+Lavender: Lowest nectar production (average ~0.54μL).  
